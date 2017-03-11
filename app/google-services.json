@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "407398553957",
+    "firebase_url": "https://boviapp.firebaseio.com",
+    "project_id": "boviapp",
+    "storage_bucket": "boviapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407398553957:android:fe6f4219dbb63726",
+        "android_client_info": {
+          "package_name": "appcom.bovi.boviapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407398553957-a6cpfi4kbpupm8vttjo1t34p63250ddo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "appcom.bovi.boviapp",
+            "certificate_hash": "c202b6cc81db22d8e5d71fe9319b846006173173"
+          }
+        },
+        {
+          "client_id": "407398553957-i424smqq5vp1svf986tr8enk2i3j6r9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkwxxZuYURbH5pL6ldh_HIv2hyv11g71g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407398553957-i424smqq5vp1svf986tr8enk2i3j6r9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

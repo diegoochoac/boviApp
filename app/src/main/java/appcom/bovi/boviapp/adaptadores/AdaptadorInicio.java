@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import appcom.bovi.boviapp.Funciones;
 import appcom.bovi.boviapp.R;
 
 /**
