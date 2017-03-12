@@ -17,6 +17,8 @@
     <string name="hint_email">Correo</string>
     <string name="hint_password">Contraseña</string>
     <string name="action_sign_in">Iniciar sesión</string>
+    <string name="action_sign_register">Registrarse</string>
+
     <string name="action_sign_in_ime">Loguear</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

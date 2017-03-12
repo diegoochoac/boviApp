@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,8 +20,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import appcom.bovi.boviapp.dataBase.FirebaseReferences;
 import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
 import appcom.bovi.boviapp.fragmentos.FragmentoListado;
 import appcom.bovi.boviapp.fragmentos.FragmentoRastreo;
@@ -28,6 +36,7 @@ import appcom.bovi.boviapp.fragmentos.FragmentoRegistro;
 import appcom.bovi.boviapp.login.LoginActivity;
 import appcom.bovi.boviapp.fragmentos.FragmentoNotificacion;
 import appcom.bovi.boviapp.notifications.PushNotificationsPresenter;
+import appcom.bovi.boviapp.objetos.Registro;
 import appcom.bovi.boviapp.utils.OnFragmentInteractionListener;
 
 
@@ -44,10 +53,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private DrawerLayout drawerLayout;
     private String drawerTitle;
 
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         setToolbar(); // Setear Toolbar como action bar
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -66,6 +81,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         mNotificationsFragment = (FragmentoNotificacion) getSupportFragmentManager()
                         .findFragmentById(R.id.main_container);
+
+
+        guardarRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid()
+                ,"vacaprueba2",6,"diegoOchoa");
+
+        leerRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     }
 
@@ -155,21 +176,17 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-
     public void aceptar() {
         FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        Toast t=Toast.makeText(this,"Se cerro sesion.", Toast.LENGTH_SHORT);
+        startActivity(new Intent(this, LoginActivity.class));
+        Toast t=Toast.makeText(this,"Se cerro sesión.", Toast.LENGTH_SHORT);
         t.show();
+        finish();
     }
 
     public void cancelar() {
         finish();
     }
-
-
 
 
     @Override
@@ -227,7 +244,29 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
 
 
+    private void guardarRegistro(String userId, String nombre, int edad, String dueño) {
+        Registro registro = new Registro(nombre, edad, dueño);
+        myRef.child("Registro").child(userId).setValue(registro);
+    }
 
+    private void leerRegistro(final String userId){
+        myRef.child("Registro").child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value
+                        Registro registro = dataSnapshot.getValue(Registro.class);
+                        Log.i("Registro:",userId+"-"+registro.nombre);
+                        // ...
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
+    }
 
 
 

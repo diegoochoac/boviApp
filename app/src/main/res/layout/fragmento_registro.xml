@@ -139,6 +139,13 @@
                     android:layout_weight="1" />
 
             </TableRow>
+
+            <Button
+                android:text="AGREGAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonAgregar" />
+
         </LinearLayout>
     </ScrollView>
 

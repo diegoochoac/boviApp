@@ -42,7 +42,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     private TextInputEditText mEmail;
     private TextInputEditText mPassword;
-    private Button mSignInButton;
+    private Button mSignInButton,mSignRegisterButton;
     private View mLoginForm;
     private View mLoginProgress;
     private TextInputLayout mEmailError;
@@ -100,7 +100,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         mPasswordError = (TextInputLayout) root.findViewById(R.id.til_password_error);
 
         mSignInButton = (Button) root.findViewById(R.id.b_sign_in);
-
+        mSignRegisterButton = (Button) root.findViewById(R.id.b_sign_register);
         // Eventos
         mEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -159,8 +159,18 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 attemptLogin();
             }
         });
+
+        mSignRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerLogin(mEmail.getText().toString(),
+                        mPassword.getText().toString());
+            }
+        });
         return root;
     }
+
+
 
 
     private void setupLoginBackground(final View root) {
@@ -239,6 +249,10 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         mPresenter.attemptLogin(
                 mEmail.getText().toString(),
                 mPassword.getText().toString());
+    }
+
+    private void registerLogin(String Email, String Pass) { //TODO:ARREGLAR ESTO
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email,Pass);
     }
 
     @Override
