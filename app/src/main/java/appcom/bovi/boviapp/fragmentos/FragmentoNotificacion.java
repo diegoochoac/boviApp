@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,8 +79,16 @@ public class FragmentoNotificacion extends Fragment implements PushNotificationC
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("Fragmento Notofi","onStart");
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
+        Log.i("Fragmento Notofi","onResume");
         mPresenter.start();
 
         LocalBroadcastManager.getInstance(getActivity())
@@ -89,6 +98,7 @@ public class FragmentoNotificacion extends Fragment implements PushNotificationC
     @Override
     public void onPause() {
         super.onPause();
+        Log.i("Fragmento Notofi","onPause");
         LocalBroadcastManager.getInstance(getActivity())
                 .unregisterReceiver(mNotificationsReceiver);
     }

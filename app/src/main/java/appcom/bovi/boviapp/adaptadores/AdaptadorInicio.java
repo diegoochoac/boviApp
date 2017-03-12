@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import appcom.bovi.boviapp.R;
+import appcom.bovi.boviapp.utils.ItemClickListener;
 
 /**
  * Created by diego on 9/03/17.
@@ -18,7 +19,10 @@ import appcom.bovi.boviapp.R;
 public class AdaptadorInicio extends RecyclerView.Adapter<AdaptadorInicio.ViewHolder> {
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static ItemClickListener clickListener;
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // Campos respectivos de un item
         public TextView nombre;
         public ImageView imagen;
@@ -27,7 +31,21 @@ public class AdaptadorInicio extends RecyclerView.Adapter<AdaptadorInicio.ViewHo
             super(v);
             nombre = (TextView) v.findViewById(R.id.nombre);
             imagen = (ImageView) v.findViewById(R.id.miniatura);
+
+            v.setTag(v);
+            v.setOnClickListener(this);
         }
+        @Override
+        public void onClick(View view) {
+            //Log.i("posision","posicion:");
+            if(clickListener != null){
+                clickListener.onClick(view, getAdapterPosition()); //OnItemClickListener mItemClickListener;
+            }
+        }
+    }
+
+    public void setClickListener(ItemClickListener itemClickListener){
+        this.clickListener = itemClickListener;
     }
 
     public AdaptadorInicio() {
@@ -56,6 +74,5 @@ public class AdaptadorInicio extends RecyclerView.Adapter<AdaptadorInicio.ViewHo
         viewHolder.nombre.setText(item.getNombre());
 
     }
-
 
 }

@@ -2,6 +2,7 @@ package appcom.bovi.boviapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,14 +22,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
+import appcom.bovi.boviapp.fragmentos.FragmentoListado;
 import appcom.bovi.boviapp.fragmentos.FragmentoRastreo;
 import appcom.bovi.boviapp.fragmentos.FragmentoRegistro;
 import appcom.bovi.boviapp.login.LoginActivity;
 import appcom.bovi.boviapp.fragmentos.FragmentoNotificacion;
 import appcom.bovi.boviapp.notifications.PushNotificationsPresenter;
+import appcom.bovi.boviapp.utils.OnFragmentInteractionListener;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
+
+
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mNotificationsFragment = (FragmentoNotificacion) getSupportFragmentManager()
-                        .findFragmentById(R.id.notifications_container);
+                        .findFragmentById(R.id.main_container);
 
     }
 
@@ -112,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     mNotificationsFragment = FragmentoNotificacion.newInstance();
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.notifications_container, mNotificationsFragment)
+                            .replace(R.id.main_container, mNotificationsFragment)
                             .commit();
                 }
                 mNotificationsPresenter = new PushNotificationsPresenter(
@@ -144,11 +150,9 @@ public class MainActivity extends AppCompatActivity {
         if (fragmentoGenerico != null) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.notifications_container, fragmentoGenerico)
+                    .replace(R.id.main_container, fragmentoGenerico)
                     .commit();
         }
-        // Setear título actual
-        //setTitle(itemDrawer.getTitle());
     }
 
 
@@ -164,6 +168,68 @@ public class MainActivity extends AppCompatActivity {
     public void cancelar() {
         finish();
     }
+
+
+
+
+    @Override
+    public void onFragmentIteration(Uri uri) {
+
+        Log.i("MAIN ","URI: "+uri.toString());
+        Fragment fragmentoGenerico= null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle args = new Bundle();
+
+        String[] spl = uri.toString().split(":");
+        switch (spl[0]){
+
+            case FragmentoInicio.SET_INICIO:
+                if (spl[1].equals("0") ){
+                    Log.i("main","ENTRO REGISTRO"+spl[1]);
+                    fragmentoGenerico = new FragmentoRegistro();
+                    /*args.putString("Contratista",  sharedpreferences.getString(contratista,""));
+                    args.putString("Trabajador", sharedpreferences.getString(usuario,""));
+                    args.putString("Maquina",  sharedpreferences.getString(maquina,""));
+                    args.putString("Hacienda",  sharedpreferences.getString(hacienda,""));
+                    args.putString("Suerte",  sharedpreferences.getString(suerte,""));
+                    fragmentoGenerico.setArguments(args);*/
+                }
+                else if (spl[1].equals("1")){
+                    Log.i("main","ENTRO LISTADO"+spl[1]);
+                    fragmentoGenerico = new FragmentoListado();
+                }
+                else if (spl[1].equals("2")){
+                    Log.i("main","ENTRO NOTIFICACIONES"+spl[1]);
+                    if (mNotificationsFragment == null) {
+                        mNotificationsFragment = FragmentoNotificacion.newInstance();
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.main_container, mNotificationsFragment)
+                                .commit();
+                    }
+                    mNotificationsPresenter = new PushNotificationsPresenter(
+                            mNotificationsFragment, FirebaseMessaging.getInstance());
+                }
+                else if (spl[1].equals("3")){
+                    Log.i("main","ENTRO RASTREO"+spl[1]);
+                    fragmentoGenerico = new FragmentoRastreo();
+                }
+                break;
+        }
+
+        if (fragmentoGenerico != null) {
+            fragmentManager
+                    .beginTransaction().addToBackStack(null)
+                    .replace(R.id.main_container, fragmentoGenerico)
+                    .commit();
+        }
+    }
+
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,6 +249,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }

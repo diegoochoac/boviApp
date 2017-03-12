@@ -20,7 +20,6 @@
     <style name="Theme.BovApp" parent="Base.AppTheme" />
 
 
-
     <style name="AppTheme.AccentButton">
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textColor">@android:color/white</item>
