@@ -1,4 +1,4 @@
-package appcom.bovi.boviapp.notifications;
+package appcom.bovi.boviapp.fragmentos;
 
 
 import android.content.BroadcastReceiver;
@@ -18,11 +18,14 @@ import java.util.ArrayList;
 
 import appcom.bovi.boviapp.R;
 import appcom.bovi.boviapp.data.PushNotification;
+import appcom.bovi.boviapp.notifications.PushNotificationContract;
+import appcom.bovi.boviapp.notifications.PushNotificationsAdapter;
+import appcom.bovi.boviapp.notifications.PushNotificationsPresenter;
 
 /**
  * Muestra lista de notificaciones
  */
-public class PushNotificationsFragment extends Fragment implements PushNotificationContract.View {
+public class FragmentoNotificacion extends Fragment implements PushNotificationContract.View {
 
     public static final String ACTION_NOTIFY_NEW_PROMO = "NOTIFY_NEW_PROMO";
     private BroadcastReceiver mNotificationsReceiver;
@@ -34,11 +37,11 @@ public class PushNotificationsFragment extends Fragment implements PushNotificat
     private PushNotificationsPresenter mPresenter;
 
 
-    public PushNotificationsFragment() {
+    public FragmentoNotificacion() {
     }
 
-    public static PushNotificationsFragment newInstance() {
-        PushNotificationsFragment fragment = new PushNotificationsFragment();
+    public static FragmentoNotificacion newInstance() {
+        FragmentoNotificacion fragment = new FragmentoNotificacion();
         // Setup de Argumentos
         return fragment;
     }
@@ -65,7 +68,7 @@ public class PushNotificationsFragment extends Fragment implements PushNotificat
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragmento_notificacion, container, false);
 
         mNotificatiosAdapter = new PushNotificationsAdapter();
         mRecyclerView = (RecyclerView) root.findViewById(R.id.rv_notifications_list);

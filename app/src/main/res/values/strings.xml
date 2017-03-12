@@ -10,7 +10,7 @@
     <string name="notificaciones_item">Notificaciones</string>
     <string name="rastreo_item">Rastreo</string>
     <string name="Bluetooth_item">Bluetooth</string>
-    <string name="log_out_item">Salir</string>
+    <string name="cerrarsesion_item">Salir</string>
     <string name="configuracion_item">Configuración</string>
 
     <!-- Strings Login -->

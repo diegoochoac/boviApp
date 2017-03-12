@@ -37,9 +37,9 @@
                     android:title="@string/Bluetooth_item" />
 
                 <item
-                    android:id="@+id/nav_log_out"
+                    android:id="@+id/nav_cerrarsesion"
                     android:icon="@android:drawable/ic_lock_power_off"
-                    android:title="@string/log_out_item" />
+                    android:title="@string/cerrarsesion_item" />
             </menu>
         </item>
     </group>

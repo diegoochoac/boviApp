@@ -1,7 +1,10 @@
 package appcom.bovi.boviapp.adaptadores;
 
+import android.content.res.Resources;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import appcom.bovi.boviapp.R;
 
@@ -14,6 +17,8 @@ public class Funciones {
     private String nombre;
     private int idDrawable;
 
+
+
     public Funciones(String nombre, int idDrawable) {
         this.nombre = nombre;
         this.idDrawable = idDrawable;
@@ -21,11 +26,13 @@ public class Funciones {
 
     public static final List<Funciones> FUNCIONES = new ArrayList<Funciones>();
 
+
+
     static {
         FUNCIONES.add(new Funciones("Registro", R.drawable.registro));
         FUNCIONES.add(new Funciones("Listado",R.drawable.registro));
-        FUNCIONES.add(new Funciones("Alertas",R.drawable.registro));
-        FUNCIONES.add(new Funciones("Rastreo",R.drawable.ubicacion));
+        FUNCIONES.add(new Funciones("Notificaciones",R.drawable.registro));
+        FUNCIONES.add(new Funciones("Rastreo",R.drawable.registro));
 
     }
     public String getNombre() {
@@ -35,4 +42,6 @@ public class Funciones {
     public int getIdDrawable() {
         return idDrawable;
     }
+
+
 }

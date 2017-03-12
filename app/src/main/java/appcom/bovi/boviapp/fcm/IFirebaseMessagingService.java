@@ -17,7 +17,7 @@ import java.util.Map;
 
 import appcom.bovi.boviapp.R;
 import appcom.bovi.boviapp.MainActivity;
-import appcom.bovi.boviapp.notifications.PushNotificationsFragment;
+import appcom.bovi.boviapp.fragmentos.FragmentoNotificacion;
 
 public class IFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = IFirebaseMessagingService.class.getSimpleName();
@@ -30,7 +30,7 @@ public class IFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNewPromoBroadcast(RemoteMessage remoteMessage) {
-        Intent intent = new Intent(PushNotificationsFragment.ACTION_NOTIFY_NEW_PROMO);
+        Intent intent = new Intent(FragmentoNotificacion.ACTION_NOTIFY_NEW_PROMO);
         intent.putExtra("title", remoteMessage.getNotification().getTitle());
         intent.putExtra("description", remoteMessage.getNotification().getBody());
         intent.putExtra("expiry_date", remoteMessage.getData().get("expiry_date"));

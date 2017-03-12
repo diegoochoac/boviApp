@@ -1,5 +1,6 @@
 package appcom.bovi.boviapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -8,10 +9,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -20,7 +23,7 @@ import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
 import appcom.bovi.boviapp.fragmentos.FragmentoRastreo;
 import appcom.bovi.boviapp.fragmentos.FragmentoRegistro;
 import appcom.bovi.boviapp.login.LoginActivity;
-import appcom.bovi.boviapp.notifications.PushNotificationsFragment;
+import appcom.bovi.boviapp.fragmentos.FragmentoNotificacion;
 import appcom.bovi.boviapp.notifications.PushNotificationsPresenter;
 
 
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private PushNotificationsFragment mNotificationsFragment;
+    private FragmentoNotificacion mNotificationsFragment;
     private PushNotificationsPresenter mNotificationsPresenter;
 
 
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        mNotificationsFragment = (PushNotificationsFragment) getSupportFragmentManager()
+        mNotificationsFragment = (FragmentoNotificacion) getSupportFragmentManager()
                         .findFragmentById(R.id.notifications_container);
 
     }
@@ -106,13 +109,12 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.nav_notificaciones:
                 if (mNotificationsFragment == null) {
-                    mNotificationsFragment = PushNotificationsFragment.newInstance();
+                    mNotificationsFragment = FragmentoNotificacion.newInstance();
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .add(R.id.notifications_container, mNotificationsFragment)
+                            .replace(R.id.notifications_container, mNotificationsFragment)
                             .commit();
                 }
-
                 mNotificationsPresenter = new PushNotificationsPresenter(
                         mNotificationsFragment, FirebaseMessaging.getInstance());
                 break;
@@ -121,8 +123,22 @@ public class MainActivity extends AppCompatActivity {
                 fragmentoGenerico = new FragmentoRastreo();
                 break;
 
-            case R.id.nav_log_out:
-                //Cerrar la APP
+            case R.id.nav_cerrarsesion:
+                AlertDialog.Builder dialogoCerrarSesion = new AlertDialog.Builder(this);
+                dialogoCerrarSesion.setTitle("Advertencia");
+                dialogoCerrarSesion.setMessage("Desea cerrar sesión");
+                dialogoCerrarSesion.setCancelable(false);
+                dialogoCerrarSesion.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogoCerrarSesion, int id) {
+                        aceptar();
+                    }
+                });
+                dialogoCerrarSesion.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogoCerrarSesion, int id) {
+                        cancelar();
+                    }
+                });
+                dialogoCerrarSesion.show();
                 break;
         }
         if (fragmentoGenerico != null) {
@@ -135,6 +151,19 @@ public class MainActivity extends AppCompatActivity {
         //setTitle(itemDrawer.getTitle());
     }
 
+
+    public void aceptar() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        Toast t=Toast.makeText(this,"Se cerro sesion.", Toast.LENGTH_SHORT);
+        t.show();
+    }
+
+    public void cancelar() {
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
