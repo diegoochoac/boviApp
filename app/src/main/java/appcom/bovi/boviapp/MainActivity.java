@@ -1,5 +1,6 @@
 package appcom.bovi.boviapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,23 +13,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
 import appcom.bovi.boviapp.fragmentos.FragmentoRastreo;
 import appcom.bovi.boviapp.fragmentos.FragmentoRegistro;
+import appcom.bovi.boviapp.login.LoginActivity;
+import appcom.bovi.boviapp.notifications.PushNotificationsFragment;
+import appcom.bovi.boviapp.notifications.PushNotificationsPresenter;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    /**
-     * Instancia del drawer
-     */
+    private PushNotificationsFragment mNotificationsFragment;
+    private PushNotificationsPresenter mNotificationsPresenter;
+
+
     private DrawerLayout drawerLayout;
-
-    /**
-     * Titulo inicial del drawer
-     */
     private String drawerTitle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +41,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setToolbar(); // Setear Toolbar como action bar
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_notificaciones);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
-            // Seleccionar item por defecto
+            // Seleccionar el fragmento de INICIO
             seleccionarItem(navigationView.getMenu().getItem(0));
         }
 
-        drawerTitle = getResources().getString(R.string.home_item);
-        if (savedInstanceState == null) {
-            //selectItem(drawerTitle);
+        // ¿Existe un usuario logueado?
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
+        mNotificationsFragment = (PushNotificationsFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.notifications_container);
+
     }
+
 
     private void setToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,31 +96,44 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (itemDrawer.getItemId()) {
-            case R.id.nav_home:
+            case R.id.nav_inicio:
                 fragmentoGenerico = new FragmentoInicio();
                 break;
-            case R.id.nav_register:
+
+            case R.id.nav_registro:
                 fragmentoGenerico = new FragmentoRegistro();
                 break;
-            case R.id.nav_tracker:
+
+            case R.id.nav_notificaciones:
+                if (mNotificationsFragment == null) {
+                    mNotificationsFragment = PushNotificationsFragment.newInstance();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.notifications_container, mNotificationsFragment)
+                            .commit();
+                }
+
+                mNotificationsPresenter = new PushNotificationsPresenter(
+                        mNotificationsFragment, FirebaseMessaging.getInstance());
+                break;
+
+            case R.id.nav_rastreo:
                 fragmentoGenerico = new FragmentoRastreo();
                 break;
 
             case R.id.nav_log_out:
-               //Cerrar la APP
+                //Cerrar la APP
                 break;
         }
         if (fragmentoGenerico != null) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.main_content, fragmentoGenerico)
+                    .replace(R.id.notifications_container, fragmentoGenerico)
                     .commit();
         }
-
         // Setear título actual
         //setTitle(itemDrawer.getTitle());
     }
-
 
 
     @Override
@@ -132,4 +154,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

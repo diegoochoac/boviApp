@@ -12,14 +12,14 @@
     <!-- Logo -->
     <TextView
         android:id="@+id/tv_logo"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:layout_width="wrap_content"
         android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="56dp"
         android:layout_marginTop="108dp"
-        android:text="CAR INSURANCE"
+        android:text="BOVIAPP"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
     <!-- Indicador de progreso -->
@@ -40,7 +40,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_email_error"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@android:color/black"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -60,7 +60,7 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_password_error"
             android:layout_width="match_parent"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@android:color/black"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText

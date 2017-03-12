@@ -32,9 +32,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import appcom.bovi.boviapp.MainActivity;
 import appcom.bovi.boviapp.R;
-import appcom.bovi.boviapp.notifications.PushNotificationsActivity;
+import appcom.bovi.boviapp.MainActivity;
 
 
 public class LoginFragment extends Fragment implements LoginContract.View {
@@ -274,7 +273,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showPushNotifications() {
-        startActivity(new Intent(getActivity(), PushNotificationsActivity.class));
+        startActivity(new Intent(getActivity(), MainActivity.class));
         getActivity().finish();
     }
 

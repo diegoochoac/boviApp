@@ -16,7 +16,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 import appcom.bovi.boviapp.R;
-import appcom.bovi.boviapp.notifications.PushNotificationsActivity;
+import appcom.bovi.boviapp.MainActivity;
 import appcom.bovi.boviapp.notifications.PushNotificationsFragment;
 
 public class IFirebaseMessagingService extends FirebaseMessagingService {
@@ -40,7 +40,7 @@ public class IFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void displayNotification(RemoteMessage.Notification notification, Map<String, String> data) {
-        Intent intent = new Intent(this, PushNotificationsActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);

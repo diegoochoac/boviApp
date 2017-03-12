@@ -1,16 +1,19 @@
 <resources>
+    <!-- Strings App General -->
     <string name="app_name">BOVIAPP</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuracion</string>
 
+    <!-- Strings Menu Lateral -->
     <string name="home_item">Inicio</string>
     <string name="registro_item">Registro</string>
+    <string name="listado_item">Listado</string>
+    <string name="notificaciones_item">Notificaciones</string>
     <string name="rastreo_item">Rastreo</string>
     <string name="Bluetooth_item">Bluetooth</string>
-
     <string name="log_out_item">Salir</string>
     <string name="configuracion_item">Configuración</string>
 
-    <!-- Strings related to attemptLogin -->
+    <!-- Strings Login -->
     <string name="hint_email">Correo</string>
     <string name="hint_password">Contraseña</string>
     <string name="action_sign_in">Iniciar sesión</string>
@@ -19,9 +22,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="title_activity_notifications">Notificaciones</string>
     <string name="no_message_text">No hay ningúna notificación todavía</string>
 
