@@ -9,20 +9,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <!--TODO: ELIMINAR-->
-   <!-- <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>-->
 
     <!-- Contenido Principal -->
     <include layout="@layout/content_main" />
@@ -36,6 +22,8 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
+
+
 
 <!--</android.support.design.widget.CoordinatorLayout>-->
     </android.support.v4.widget.DrawerLayout>

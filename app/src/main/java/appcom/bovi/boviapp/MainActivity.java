@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         myRef = database.getReference();
 
         setToolbar(); // Setear Toolbar como action bar
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_notificaciones);
         if (navigationView != null) {
