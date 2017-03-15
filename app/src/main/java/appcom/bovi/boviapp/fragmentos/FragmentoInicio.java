@@ -3,10 +3,7 @@ package appcom.bovi.boviapp.fragmentos;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import appcom.bovi.boviapp.adaptadores.AdaptadorInicio;
 import appcom.bovi.boviapp.R;
+import appcom.bovi.boviapp.adaptadores.AdaptadorInicio;
 import appcom.bovi.boviapp.utils.ItemClickListener;
 import appcom.bovi.boviapp.utils.OnFragmentInteractionListener;
 
@@ -52,6 +49,8 @@ public class FragmentoInicio extends Fragment implements ItemClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragmento_inicio, container, false);
+
+
 
         reciclador = (RecyclerView) view.findViewById(R.id.reciclador);
         layoutManager = new GridLayoutManager(getActivity(), 2);

@@ -33,6 +33,7 @@ import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
 import appcom.bovi.boviapp.fragmentos.FragmentoListado;
 import appcom.bovi.boviapp.fragmentos.FragmentoRastreo;
 import appcom.bovi.boviapp.fragmentos.FragmentoRegistro;
+import appcom.bovi.boviapp.fragmentos.FragmentoTab;
 import appcom.bovi.boviapp.login.LoginActivity;
 import appcom.bovi.boviapp.fragmentos.FragmentoNotificacion;
 import appcom.bovi.boviapp.notifications.PushNotificationsPresenter;
@@ -84,10 +85,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         .findFragmentById(R.id.main_container);
 
 
-        guardarRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid()
+        /*guardarRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid()
                 ,"vacaprueba2",6,"diegoOchoa");
-
-        leerRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        leerRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid());*/
 
     }
 
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         switch (itemDrawer.getItemId()) {
             case R.id.nav_inicio:
-                fragmentoGenerico = new FragmentoInicio();
+                fragmentoGenerico = new FragmentoTab();
                 break;
 
             case R.id.nav_registro:
