@@ -251,7 +251,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 mPassword.getText().toString());
     }
 
-    private void registerLogin(String Email, String Pass) { //TODO:ARREGLAR ESTO
+    private void registerLogin(String Email, String Pass) { //TODO:ARREGLAR ESTO Hacerlo con el modelo MVC
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(Email,Pass);
     }
 

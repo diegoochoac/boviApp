@@ -2,6 +2,7 @@ package appcom.bovi.boviapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private FragmentoNotificacion mNotificationsFragment;
     private PushNotificationsPresenter mNotificationsPresenter;
+
+    private static final int TOMAR_FOTO = 1;
 
 
     private DrawerLayout drawerLayout;
@@ -233,6 +236,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentoGenerico = new FragmentoRastreo();
                 }
                 break;
+            case FragmentoRegistro.SET_REGISTRO:
+
+                //TODO:Falta la clave para saber quien lo esta pidiendo
+                Intent camaraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camaraIntent, TOMAR_FOTO);
+
+                break;
         }
 
         if (fragmentoGenerico != null) {
@@ -269,6 +279,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if  (requestCode == TOMAR_FOTO) {
+            Bitmap imagen = (Bitmap) data.getExtras().get("data");
+        }
+    }
 
 
     @Override

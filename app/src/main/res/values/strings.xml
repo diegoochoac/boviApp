@@ -28,8 +28,6 @@
     <string name="title_activity_notifications">Notificaciones</string>
     <string name="no_message_text">No hay ningúna notificación todavía</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_camera">CameraActivity</string>
