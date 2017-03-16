@@ -2,6 +2,7 @@ package appcom.bovi.boviapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -204,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         String[] spl = uri.toString().split(":");
         switch (spl[0]){
 
+            //<editor-fold desc="Fragmento Inicio">
             case FragmentoInicio.SET_INICIO:
                 if (spl[1].equals("0") ){
                     Log.i("main","ENTRO REGISTRO"+spl[1]);
@@ -236,13 +240,22 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentoGenerico = new FragmentoRastreo();
                 }
                 break;
+            //</editor-fold>
+
+            //<editor-fold desc="Fragmento Registro">
             case FragmentoRegistro.SET_REGISTRO:
-
-                //TODO:Falta la clave para saber quien lo esta pidiendo
-                Intent camaraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(camaraIntent, TOMAR_FOTO);
-
+                if (spl[1].equals("FOTO") ){
+                    Intent camaraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camaraIntent, TOMAR_FOTO);
+                }
+                else if (spl[1].equals("RAZA")){
+                    //TODO:AGREGAR UN ALERT CON LA LISTA DE ESPECIES
+                }
+                else if (spl[1].equals("AGREGAR")){
+                    //TODO:AGREGAR EN BASE DE DATOS
+                }
                 break;
+            //</editor-fold>
         }
 
         if (fragmentoGenerico != null) {
@@ -281,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if  (requestCode == TOMAR_FOTO) {
+        if  (requestCode == TOMAR_FOTO && data != null) {
             Bitmap imagen = (Bitmap) data.getExtras().get("data");
         }
     }

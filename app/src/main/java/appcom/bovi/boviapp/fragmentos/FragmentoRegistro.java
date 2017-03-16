@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import appcom.bovi.boviapp.R;
 import appcom.bovi.boviapp.utils.OnFragmentInteractionListener;
@@ -17,9 +19,10 @@ import appcom.bovi.boviapp.utils.OnFragmentInteractionListener;
 
 public class FragmentoRegistro extends Fragment implements View.OnClickListener {
 
-    private ImageView camara;
+    private ImageView imagCamara;
+    private EditText editNombre,editEdad, editPeso, editDias, editDueño, editUbicacion;
+    private TextView texRaza;
     private Button btnRegistrar;
-
 
     private OnFragmentInteractionListener mCallback = null;
     Uri uri = Uri.parse("");
@@ -44,10 +47,17 @@ public class FragmentoRegistro extends Fragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragmento_registro, container, false);
 
-        camara = (ImageView)view.findViewById(R.id.imageView);
-        camara.setOnClickListener(this);
-        //camara.setImageBitmap(imagen);
-
+        imagCamara = (ImageView)view.findViewById(R.id.imageView);
+        imagCamara.setOnClickListener(this);
+        //imagCamara.setImageBitmap(imagen);
+        editNombre = (EditText)view.findViewById(R.id.editTextNombre);
+        editEdad = (EditText)view.findViewById(R.id.editTextEdad);
+        editPeso = (EditText)view.findViewById(R.id.editTextPeso);
+        editDias = (EditText)view.findViewById(R.id.editTextDias) ;
+        editDueño = (EditText)view.findViewById(R.id.editTextDueño);
+        editUbicacion = (EditText)view.findViewById(R.id.editTextUbicacion);
+        texRaza = (TextView)view.findViewById(R.id.textViewRaza) ;
+        texRaza.setOnClickListener(this);
         btnRegistrar = (Button) view.findViewById(R.id.buttonAgregar);
         btnRegistrar.setOnClickListener(this);
         return view;
@@ -73,8 +83,21 @@ public class FragmentoRegistro extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        Log.i("Fragmento Inicio","Registro Posicion: "+view.toString());
-        uri = Uri.parse(SET_REGISTRO+":"+view.toString());
+        Log.i("Fragmento Inicio","Registro Posicion: "+view.getId());
+        switch (view.getId()) {
+            case R.id.imageView:
+                uri = Uri.parse(SET_REGISTRO+":"+"FOTO");
+                break;
+
+            case R.id.textViewRaza:
+                uri = Uri.parse(SET_REGISTRO+":"+"RAZA");
+                break;
+
+            case R.id.buttonAgregar:
+                uri = Uri.parse(SET_REGISTRO+":"+"AGREGAR");
+                break;
+
+        }
         mCallback.onFragmentIteration(uri);
     }
 
