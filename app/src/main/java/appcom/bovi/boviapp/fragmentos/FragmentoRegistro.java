@@ -64,6 +64,9 @@ public class FragmentoRegistro extends Fragment implements View.OnClickListener 
 
     }
 
+
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

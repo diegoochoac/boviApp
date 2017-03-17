@@ -7,34 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 import appcom.bovi.boviapp.R;
 
 
-public class FragmentoRastreo extends Fragment {
+public class FragmentoRastreo extends SupportMapFragment {
 
     public FragmentoRastreo() {
         // Required empty public constructor
     }
 
-    public static FragmentoRastreo newInstance(String param1, String param2) {
-        FragmentoRastreo fragment = new FragmentoRastreo();
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+    public static FragmentoRastreo newInstance() {
+        return new FragmentoRastreo();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragmento_rastreo, container, false);
+        //View view = inflater.inflate(R.layout.fragmento_rastreo, container, false);
+        View root = super.onCreateView(inflater, container, savedInstanceState);
 
-        return view;
+        return root;
     }
 
 }
