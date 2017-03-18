@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -31,6 +32,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +42,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import appcom.bovi.boviapp.dataBase.FirebaseReferences;
 import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
@@ -72,8 +80,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private DrawerLayout drawerLayout;
     private String drawerTitle;
 
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageReference = storage.getReferenceFromUrl("gs://boviapp.appspot.com");
+
+    Bitmap imagen;
+    Uri fileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
 
         setToolbar(); // Setear Toolbar como action bar
 
@@ -103,8 +115,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         mNotificationsFragment = (FragmentoNotificacion) getSupportFragmentManager()
                 .findFragmentById(R.id.main_container);
 
-        /*guardarRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid()
-                ,"vacaprueba2",6,"diegoOchoa");
+        /*
         leerRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid());*/
 
     }
@@ -278,6 +289,18 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     //TODO:AGREGAR UN ALERT CON LA LISTA DE ESPECIES
                 } else if (spl[1].equals("AGREGAR")) {
                     //TODO:AGREGAR EN BASE DE DATOS
+                    String Nombre ="", Raza ="", Ubicacion="";
+                    int Edad = 0, Peso =0;
+                    Nombre = spl[2];
+                    Raza = spl[3];
+                    Edad = Integer.parseInt(spl[4]);
+                    Peso = Integer.parseInt(spl[5]);
+                    Ubicacion = spl[6];
+                    guardarRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid()
+                            ,Nombre,Edad,Peso,Raza,"diegoOchoa",Ubicacion);
+
+                    gurdarImagen(fileUri);
+
                 }
                 break;
             //</editor-fold>
@@ -293,9 +316,50 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
 
-    private void guardarRegistro(String userId, String nombre, int edad, String dueño) {
-        Registro registro = new Registro(nombre, edad, dueño);
-        myRef.child("Registro").child(userId).setValue(registro);
+    private void guardarRegistro(String userId, String nombre, int edad, int peso,
+                                 String raza, String dueño, String ubicacion) {
+        Registro registro = new Registro(nombre,edad,peso,raza,dueño,ubicacion);
+        
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null){
+                    //textView2.setText(dataSnapshot.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "Fallo al leer el valor : " + databaseError.toException());
+
+            }
+        });
+
+        myRef.child("Registro").setValue(registro);
+    }
+
+    private void gurdarImagen(Uri file){
+
+        final StorageReference photoReference = storageReference.child("fotos").child(file.getLastPathSegment());
+
+        photoReference.putFile(fileUri).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "uploadFromUri:onFailure", e);
+                //downloadUrl = null;
+                Toast.makeText(MainActivity.this, "Error: upload failed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "uploadFromUri:onSuccess");
+                // Aquí obtenemos la url de la foto que cargamos
+                //downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                //savePictureUrlAsANote(downloadUrl);
+            }
+        });
+
     }
 
     private void leerRegistro(final String userId) {
@@ -320,8 +384,17 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == TOMAR_FOTO && data != null) {
-            Bitmap imagen = (Bitmap) data.getExtras().get("data");
+            imagen = (Bitmap) data.getExtras().get("data");
+            fileUri = getImageUri(this,imagen);
+            Log.i("FOTO",fileUri.getLastPathSegment());
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     @Override
