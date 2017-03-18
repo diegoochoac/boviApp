@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -114,6 +115,35 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         mNotificationsFragment = (FragmentoNotificacion) getSupportFragmentManager()
                 .findFragmentById(R.id.main_container);
+
+
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "Registro añadida:" + dataSnapshot.getValue().toString());
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         /*
         leerRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid());*/
@@ -299,8 +329,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     guardarRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid()
                             ,Nombre,Edad,Peso,Raza,"diegoOchoa",Ubicacion);
 
-                    gurdarImagen(fileUri);
-
+                    if (fileUri != null){
+                        gurdarImagen(fileUri);
+                    }
+                    fragmentoGenerico = new FragmentoInicio();
+                    Toast.makeText(MainActivity.this, "Registro Exitoso",
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             //</editor-fold>
@@ -315,28 +349,18 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-
     private void guardarRegistro(String userId, String nombre, int edad, int peso,
                                  String raza, String dueño, String ubicacion) {
         Registro registro = new Registro(nombre,edad,peso,raza,dueño,ubicacion);
-        
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null){
-                    //textView2.setText(dataSnapshot.getValue(String.class));
-                }
-            }
+        myRef.push().setValue(registro);
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "Fallo al leer el valor : " + databaseError.toException());
-
-            }
-        });
-
+    private void actualizarRegistro(String userId, String nombre, int edad, int peso,
+                                 String raza, String dueño, String ubicacion) {
+        Registro registro = new Registro(nombre,edad,peso,raza,dueño,ubicacion);
         myRef.child("Registro").setValue(registro);
     }
+
 
     private void gurdarImagen(Uri file){
 
