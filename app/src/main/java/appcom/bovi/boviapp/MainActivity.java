@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -48,6 +49,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import appcom.bovi.boviapp.dataBase.FirebaseReferences;
 import appcom.bovi.boviapp.fragmentos.FragmentoInicio;
@@ -90,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     Bitmap imagen;
     Uri fileUri;
 
+    final List<Registro> registros = new ArrayList<>();  //Se utiliza para traer los archivos de la DB
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d(TAG, "Registro añadida:" + dataSnapshot.getValue().toString());
+                Log.d(TAG, "Registro añadido:" + dataSnapshot.getValue().toString());
 
             }
 
@@ -144,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
             }
         });
+
+
 
         /*
         leerRegistro(FirebaseAuth.getInstance().getCurrentUser().getUid());*/
@@ -180,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private void seleccionarItem(MenuItem itemDrawer) {
         Fragment fragmentoGenerico = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle args = new Bundle();
 
         switch (itemDrawer.getItemId()) {
             case R.id.nav_inicio:
@@ -188,6 +197,15 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
             case R.id.nav_registro:
                 fragmentoGenerico = new FragmentoRegistro();
+                break;
+
+            case R.id.nav_listado:
+                leerRegistro();
+                if(registros.size()>1) {
+                    fragmentoGenerico = new FragmentoListado();
+                    args.putSerializable("DATA", (Serializable) registros);
+                    fragmentoGenerico.setArguments(args);
+                }
                 break;
 
             case R.id.nav_notificaciones:
@@ -290,7 +308,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentoGenerico.setArguments(args);*/
                 } else if (spl[1].equals("1")) {
                     Log.i("main", "ENTRO LISTADO" + spl[1]);
-                    fragmentoGenerico = new FragmentoListado();
+                    leerRegistro();
+                    if(registros.size()>1) {
+                        fragmentoGenerico = new FragmentoListado();
+                        args.putSerializable("DATA", (Serializable) registros);
+                        fragmentoGenerico.setArguments(args);
+                    }
+
                 } else if (spl[1].equals("2")) {
                     Log.i("main", "ENTRO NOTIFICACIONES" + spl[1]);
                     if (mNotificationsFragment == null) {
@@ -386,23 +410,25 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     }
 
-    private void leerRegistro(final String userId) {
-        myRef.child("Registro").child(userId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value
-                        Registro registro = dataSnapshot.getValue(Registro.class);
-                        Log.i("Registro:", userId + "-" + registro.nombre);
-                        // ...
-                    }
+    private void leerRegistro() {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        // ...
-                    }
-                });
+        myRef.getRoot().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                registros.removeAll(registros);
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    Registro registro = snapshot.getValue(Registro.class);
+                    registros.add(registro);
+                    Log.i("LEER REGI","numero:"+registros.size()+"-"+registro.nombre);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Log.i("MAIN REGISTRO",""+registros.size());
     }
 
     @Override
