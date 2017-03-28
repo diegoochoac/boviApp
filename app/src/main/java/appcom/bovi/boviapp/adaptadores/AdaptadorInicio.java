@@ -59,7 +59,7 @@ public class AdaptadorInicio extends RecyclerView.Adapter<AdaptadorInicio.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.funciones, viewGroup, false);
+                .inflate(R.layout.item_list_funcion, viewGroup, false);
         return new ViewHolder(v);
     }
 

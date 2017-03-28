@@ -29,10 +29,10 @@ public class Funciones {
 
 
     static {
-        FUNCIONES.add(new Funciones("Registro", R.drawable.registro));
-        FUNCIONES.add(new Funciones("Listado",R.drawable.registro));
-        FUNCIONES.add(new Funciones("Notificaciones",R.drawable.registro));
-        FUNCIONES.add(new Funciones("Rastreo",R.drawable.registro));
+        FUNCIONES.add(new Funciones("Registro", R.drawable.ic_registro));
+        FUNCIONES.add(new Funciones("Listado",R.drawable.ic_listado));
+        FUNCIONES.add(new Funciones("Notificaciones",R.drawable.ic_notificacion));
+        FUNCIONES.add(new Funciones("Rastreo",R.drawable.ic_ubicacion));
 
     }
     public String getNombre() {

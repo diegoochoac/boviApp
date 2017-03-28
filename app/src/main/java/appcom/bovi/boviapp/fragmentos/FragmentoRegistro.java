@@ -97,7 +97,9 @@ public class FragmentoRegistro extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.buttonAgregar:
-                uri = Uri.parse(SET_REGISTRO+":"+"AGREGAR");
+                //TODO:tengo que verificar que tengan datos
+                uri = Uri.parse(SET_REGISTRO+":"+"AGREGAR"+":"+editNombre.getText()+":"
+                +"raza1"+":"+editEdad.getText()+":"+editPeso.getText()+":"+"CALI");
                 break;
 
         }

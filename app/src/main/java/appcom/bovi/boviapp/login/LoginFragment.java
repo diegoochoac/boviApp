@@ -175,7 +175,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     private void setupLoginBackground(final View root) {
         Glide.with(this)
-                .load(R.drawable.logo)
+                .load(R.drawable.ic_home)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<GlideDrawable>() {

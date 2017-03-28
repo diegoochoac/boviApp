@@ -9,19 +9,19 @@
             android:title="@string/home_item" />
         <item
             android:id="@+id/nav_registro"
-            android:icon="@drawable/ic_store"
+            android:icon="@drawable/ic_registro"
             android:title="@string/registro_item" />
         <item
             android:id="@+id/nav_listado"
-            android:icon="@drawable/ic_shopping_cart"
+            android:icon="@drawable/ic_listado"
             android:title="@string/listado_item" />
         <item
             android:id="@+id/nav_notificaciones"
-            android:icon="@drawable/ic_shopping_cart"
+            android:icon="@drawable/ic_notificacion"
             android:title="@string/notificaciones_item" />
         <item
             android:id="@+id/nav_rastreo"
-            android:icon="@drawable/ic_shopping_cart"
+            android:icon="@drawable/ic_ubicacion"
             android:title="@string/rastreo_item" />
 
 
@@ -33,7 +33,7 @@
 
                 <item
                     android:id="@+id/nav_bluetooth"
-                    android:icon="@drawable/ic_shopping_cart"
+                    android:icon="@drawable/ic_bluetooth"
                     android:title="@string/Bluetooth_item" />
 
                 <item
